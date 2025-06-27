@@ -18,12 +18,12 @@ function addTask() {
 }
 
 listContainer.addEventListener("click", function(e) {
-    if(e.target.tagName === "LI") {
-        e.target.classList.toggle("checked");
+    if(e.target.tagName === "SPAN") {
+        e.target.parentElement.remove();
         saveData();
     }
-    else if (e.target.tagName === "SPAN") {
-        e.target.parentElement.remove();
+    else if (e.target.tagName === "LI" && !e.target.querySelector("input") ) {
+        e.target.classList.toggle("checked");
         saveData();
     } 
 }, false);
@@ -42,3 +42,38 @@ inputBox.addEventListener("keypress", function(event) {
         addTask();
     }
 })
+
+listContainer.addEventListener("dblclick", function(e) {
+    if (e.target.tagName === "LI") {
+        const li = e.target;
+        const currentText = li.firstChild.textContent.trim();
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = currentText;
+        input.className = "edit-box";
+
+        li.innerHTML = "";
+        li.appendChild(input);
+        input.focus();
+
+        input.addEventListener("blur", finishEdit);
+        input.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") finishEdit();
+        });
+
+        function finishEdit() {
+            const newText = input.value.trim();
+            if (newText !== "") {
+                li.innerHTML = newText;
+
+                const span = document.createElement("span");
+                span.innerHTML = "\u00d7";
+                li.appendChild(span);
+                saveData();
+            } else {
+                li.remove(); 
+                saveData();
+            }
+        }
+    }
+});
