@@ -77,3 +77,20 @@ listContainer.addEventListener("dblclick", function(e) {
         }
     }
 });
+
+function sortTasks() {
+    let tasks = Array.from(listContainer.children);
+
+    tasks.sort((a, b) => {
+        const textA = a.firstChild.textContent.trim().toLowerCase();
+        const textB = b.firstChild.textContent.trim().toLowerCase();
+        return textA.localeCompare(textB);
+    });
+
+    listContainer.innerHTML = "";
+
+    tasks.forEach(task => listContainer.appendChild(task));
+
+    saveData();
+}
+

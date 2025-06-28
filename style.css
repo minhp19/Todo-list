@@ -117,3 +117,12 @@ ul li span:hover {
     border: none;
     outline: none;
 }
+
+.sort {
+    background-color: green;
+}
+
+.sort:hover {
+    background-color: #135677;
+    color: violet;
+}
