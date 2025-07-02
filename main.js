@@ -8,7 +8,7 @@ function addTask() {
     else {
         let li = document.createElement("li");
         li.innerHTML = inputBox.value;
-        listContainer.appendChild(li);
+        listContainer.insertBefore(li, listContainer.firstChild);
         let span = document.createElement("span");
         span.innerHTML = "\u00d7";
         li.appendChild(span);
@@ -77,3 +77,20 @@ listContainer.addEventListener("dblclick", function(e) {
         }
     }
 });
+
+function sortTasks(desc = false) {
+    let tasks = Array.from(listContainer.children);
+
+    tasks.sort((a, b) => {
+        const textA = a.firstChild.textContent.trim().toLowerCase();
+        const textB = b.firstChild.textContent.trim().toLowerCase();
+        return desc ? textB.localeCompare(textA) : textA.localeCompare(textB);
+    });
+
+    listContainer.innerHTML = "";
+
+    tasks.forEach(task => listContainer.appendChild(task));
+
+    saveData();
+}
+
